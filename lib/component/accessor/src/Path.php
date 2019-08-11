@@ -14,6 +14,7 @@ final class Path implements ToStringInterface
     private const NODE_DELIMITER = '.';
 
     private $path;
+    private $nodes;
     private $nodesCursor;
 
     private function __construct(Node ...$nodes)
@@ -28,6 +29,7 @@ final class Path implements ToStringInterface
             );
 
             $this->path = $path;
+            $this->nodes = $nodes;
             $this->nodesCursor = new Cursor(...$nodes);
         } catch (AssertionException $e) {
             throw new RuntimeException(
@@ -96,6 +98,20 @@ final class Path implements ToStringInterface
     {
         $instance = clone $this;
         $instance->nodesCursor = $instance->nodesCursor->prev();
+
+        return $instance;
+    }
+
+    public function extend(string $path): self
+    {
+        $extension = self::fromString($path);
+        $instance = new self(
+            ...$this->nodes,
+            ...$extension->nodes
+        );
+        $instance->nodesCursor = $instance->nodesCursor->seek(
+            \current($extension->nodes)
+        );
 
         return $instance;
     }

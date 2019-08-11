@@ -9,6 +9,7 @@ use Musement\Component\Accessor\Exception\RuntimeException;
 final class ArrayAccessor implements AccessorInterface
 {
     private $data;
+    /** @var Path|null */
     private $path;
 
     private function __construct($data)
@@ -32,7 +33,7 @@ final class ArrayAccessor implements AccessorInterface
 
     public function at(string $path, string $exceptionClass = RuntimeException::class, string $exceptionMessage = null): AccessorInterface
     {
-        $path = Path::fromString($path);
+        $path = $this->path ? $this->path->extend($path) : Path::fromString($path);
         $at =& $this->data;
 
         do {
@@ -132,6 +133,18 @@ final class ArrayAccessor implements AccessorInterface
         }
 
         return (array) $this->data;
+    }
+
+    public function map(callable $callback, string $exceptionClass = RuntimeException::class, string $exceptionMessage = null): array
+    {
+        return \array_map(
+            function (string $path) use ($callback) {
+                return $callback(
+                    $this->at($path)
+                );
+            },
+            array_keys($this->array())
+        );
     }
 
     private function defaultErrorMessage(string $expectedType): string

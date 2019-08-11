@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Musement\SDK\Tests\Double\Mock;
 
-use Musement\SDK\Musement\Cities\Model\City;
 use Musement\SDK\Musement\Model\Activities;
 use Musement\SDK\Musement\Model\Cities;
 use Musement\SDK\Musement\Model\Locale;
@@ -18,7 +17,7 @@ final class SDKMock implements SDKInterface
     public function __construct()
     {
         $this->cities = new Cities();
-        $this->activities = new Activities();
+        $this->activities = new Activities(0);
     }
 
     public function willReturnCities(Cities $cities): self
@@ -28,7 +27,7 @@ final class SDKMock implements SDKInterface
         return $this;
     }
 
-    public function getCities(Locale $locale): Cities
+    public function getCities(Locale $locale, int $limit = 20, int $offset = 0): Cities
     {
         return $this->cities;
     }
@@ -40,7 +39,7 @@ final class SDKMock implements SDKInterface
         return $this;
     }
 
-    public function getActivities(Locale $locale, City $city): Activities
+    public function getActivities(Locale $locale, int $cityId, int $limit = 20, int $offset = 0): Activities
     {
         return $this->activities;
     }

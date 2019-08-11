@@ -5,7 +5,10 @@
     "require": {
         "php": "^7.3",
         "ext-json": "*",
-        "beberlei/assert": "^3.2"
+        "beberlei/assert": "^3.2",
+        "psr/log": "^1.1",
+        "psr/http-client": "^1.0",
+        "php-http/message-factory": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.3"
@@ -26,13 +29,14 @@
     },
     "scripts": {
         "tests": [
-            "@tests:php"
+            "@tests:lib:accessor",
+            "@tests:sdk:musement"
         ],
-        "tests:php": [
-            "@tests:php:accessor"
-        ],
-        "tests:php:accessor": [
+        "tests:lib:accessor": [
             "phpunit --testsuite unit --configuration lib/component/accessor/ --verbose"
+        ],
+        "tests:sdk:musement": [
+            "phpunit --testsuite unit --configuration lib/sdk/musement --verbose"
         ]
     }
 }

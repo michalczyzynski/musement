@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Musement\SDK\Musement\Cities\Model;
+namespace Musement\SDK\Musement\Model\Cities;
 
+use Musement\SDK\Musement\Assertion;
 use Musement\SDK\Musement\Model\Locale;
 
 final class City
@@ -15,6 +16,8 @@ final class City
 
     public function __construct(Locale $locale, int $id, string $name, string $url)
     {
+        Assertion::url($url);
+
         $this->locale = $locale;
         $this->id = $id;
         $this->name = $name;

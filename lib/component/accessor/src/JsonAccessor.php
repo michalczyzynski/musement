@@ -64,4 +64,9 @@ final class JsonAccessor implements AccessorInterface
     {
         return $this->arrayAccessor->array($exceptionClass, $exceptionMessage);
     }
+
+    public function map(callable $callback, string $exceptionClass = RuntimeException::class, string $exceptionMessage = null): array
+    {
+        return $this->arrayAccessor->map($callback);
+    }
 }

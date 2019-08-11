@@ -192,4 +192,20 @@ final class PathTest extends TestCase
         self::assertEquals('ghi', $currentPath->node());
         self::assertTrue($currentPath->canLeave());
     }
+
+    public function test_extend_path(): void
+    {
+        $path = Path::fromString('abc.def.ghi');
+        $newPath = $path->enter();
+
+        self::assertEquals('def', $newPath->node());
+
+        $extendedPath = $newPath->extend('jkl.mno.prs');
+
+        self::assertEquals('def', $newPath->node());
+        self::assertEquals('jkl', $extendedPath->node());
+
+        self::assertEquals('abc.def.ghi', $newPath);
+        self::assertEquals('abc.def.ghi.jkl.mno.prs', $extendedPath);
+    }
 }

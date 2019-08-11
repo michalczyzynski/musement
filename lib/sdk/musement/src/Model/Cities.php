@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Musement\SDK\Musement\Model;
 
-use Musement\SDK\Musement\Cities\Model\City;
+use Musement\SDK\Musement\Model\Cities\City;
 
 final class Cities
 {

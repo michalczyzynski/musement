@@ -17,4 +17,8 @@ interface AccessorInterface
     public function float(string $exceptionClass = RuntimeException::class, string $exceptionMessage = null): float;
     public function boolean(string $exceptionClass = RuntimeException::class, string $exceptionMessage = null): bool;
     public function array(string $exceptionClass = RuntimeException::class, string $exceptionMessage = null): array;
+    /**
+     * @param callable $callback Callback arguments: \Musement\Component\Accessor\AccessorInterface
+     */
+    public function map(callable $callback, string $exceptionClass = RuntimeException::class, string $exceptionMessage = null): array;
 }

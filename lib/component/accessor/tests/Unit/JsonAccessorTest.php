@@ -346,19 +346,19 @@ final class JsonAccessorTest extends TestCase
         // Last node of path doesn't exist.
         yield [
             'types.lasagna',
-            'Path types.lasagna does not exist.'
+            'Path config.0.types.lasagna does not exist.'
         ];
 
         // Middle node of path doesn't exist.
         yield [
             'credentials.aws.username',
-            'Path credentials (part of credentials.aws.username) does not exist.'
+            'Path config.0.credentials (part of config.0.credentials.aws.username) does not exist.'
         ];
 
         // One of the nodes in the path is not an array
         yield [
             'types.string.lowercased.length',
-            'Data at types.string is not an array.'
+            'Data at config.0.types.string is not an array.'
         ];
     }
 
@@ -371,8 +371,46 @@ final class JsonAccessorTest extends TestCase
         $accessor = $accessor->at('config.0.types.string');
 
         self::expectException(RuntimeException::class);
-        self::expectExceptionMessage('Data is not an array.');
+        self::expectExceptionMessage('Data at config.0.types.string is not an array.');
 
         $accessor->at('test');
+    }
+
+    public function test_successful_map(): void
+    {
+        $accessor = new JsonAccessor(
+            file_get_contents(__DIR__ . '/../Resource/types.json')
+        );
+
+        $accessor = $accessor->at('config.0.types');
+
+        self::assertEquals(
+            [
+                'this is string',
+                10,
+                15.33,
+                true,
+                ['a', 2, 'c'],
+            ],
+            $accessor->map(
+                function (AccessorInterface $accessor) {
+                    return $accessor->value();
+                }
+            )
+        );
+    }
+
+    public function test_map_fails_when_target_is_not_an_array(): void
+    {
+        $accessor = new JsonAccessor(
+            file_get_contents(__DIR__ . '/../Resource/types.json')
+        );
+
+        $accessor = $accessor->at('config.0.types.string');
+
+        self::expectException(RuntimeException::class);
+        self::expectExceptionMessage('Expected array, got string.');
+
+        $accessor->map(function() {});
     }
 }
