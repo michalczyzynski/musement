@@ -1,0 +1,38 @@
+{
+    "name": "michalczyzynski/musement-task",
+    "type": "project",
+    "description": "Musement recruitment task",
+    "require": {
+        "php": "^7.3",
+        "ext-json": "*",
+        "beberlei/assert": "^3.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Musement\\App\\": "app/src",
+            "Musement\\Component\\Accessor\\": "lib/component/accessor/src",
+            "Musement\\SDK\\Musement\\": "lib/sdk/musement/src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Musement\\App\\Tests\\": "app/tests",
+            "Musement\\Component\\Accessor\\Tests\\": "lib/component/accessor/tests",
+            "Musement\\SDK\\Musement\\Tests\\": "lib/sdk/musement/tests"
+        }
+    },
+    "scripts": {
+        "tests": [
+            "@tests:php"
+        ],
+        "tests:php": [
+            "@tests:php:accessor"
+        ],
+        "tests:php:accessor": [
+            "phpunit --testsuite unit --configuration lib/component/accessor/ --verbose"
+        ]
+    }
+}

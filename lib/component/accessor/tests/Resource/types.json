@@ -1,0 +1,13 @@
+{
+    "config": [
+        {
+            "types": {
+                "string": "this is string",
+                "integer": 10,
+                "float": 15.33,
+                "boolean": true,
+                "array": ["a", 2, "c"]
+            }
+        }
+    ]
+}

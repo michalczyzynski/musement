@@ -1,0 +1,23 @@
+[
+    {
+        "id": 57,
+        "top": false,
+        "name": "Amsterdam",
+        "code": "amsterdam"
+    },
+    {
+        "id": 40,
+        "part": 10.123,
+        "top": true,
+        "name": "Paris",
+        "code": "paris",
+        "meta": {
+            "weight": 19,
+            "description": "Here be description.",
+            "type": "node",
+            "sink": {
+                "hole": "oh my"
+            }
+        }
+    }
+]
