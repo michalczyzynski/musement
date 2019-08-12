@@ -18,8 +18,8 @@ final class Cities
     /**
      * @param callable $callback Callback args: \Musement\SDK\Musement\Cities\Model\City
      */
-    public function map(callable $callback): array
+    public function each(callable $callback): void
     {
-        return \array_map($callback, $this->cities);
+        \array_map($callback, $this->cities);
     }
 }

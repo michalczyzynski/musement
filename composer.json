@@ -4,18 +4,35 @@
     "description": "Musement recruitment task",
     "require": {
         "php": "^7.3",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
         "ext-json": "*",
         "beberlei/assert": "^3.2",
-        "psr/log": "^1.1",
+        "nyholm/psr7": "^1.1",
         "psr/http-client": "^1.0",
-        "php-http/message-factory": "^1.0"
+        "psr/http-factory": "^1.0",
+        "psr/log": "^1.1",
+        "symfony/console": "4.3.*",
+        "symfony/dotenv": "4.3.*",
+        "symfony/flex": "^1.3.1",
+        "symfony/framework-bundle": "4.3.*",
+        "symfony/http-client": "4.3.*",
+        "symfony/monolog-bundle": "^3.4",
+        "symfony/yaml": "4.3.*",
+        "thepixeldeveloper/sitemap": "^5.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.3"
     },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
     "autoload": {
         "psr-4": {
-            "Musement\\App\\": "app/src",
+            "Musement\\": "app/src",
             "Musement\\Component\\Accessor\\": "lib/component/accessor/src",
             "Musement\\SDK\\Musement\\": "lib/sdk/musement/src"
         }
@@ -27,7 +44,24 @@
             "Musement\\SDK\\Musement\\Tests\\": "lib/sdk/musement/tests"
         }
     },
+    "replace": {
+        "paragonie/random_compat": "2.*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php70": "*",
+        "symfony/polyfill-php56": "*"
+    },
     "scripts": {
+        "auto-scripts": {
+            "bin/symfony cache:clear": "script"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ],
         "tests": [
             "@tests:lib:accessor",
             "@tests:sdk:musement"
@@ -38,5 +72,14 @@
         "tests:sdk:musement": [
             "phpunit --testsuite unit --configuration lib/sdk/musement --verbose"
         ]
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "4.3.*"
+        }
     }
 }

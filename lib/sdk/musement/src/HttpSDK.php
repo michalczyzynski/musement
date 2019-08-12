@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Musement\SDK\Musement;
 
-use Http\Message\RequestFactory;
 use Musement\Component\Accessor\JsonAccessor;
 use Musement\SDK\Musement\Exception\ApiException;
 use Musement\SDK\Musement\Exception\RuntimeException;
@@ -17,32 +16,33 @@ use Musement\SDK\Musement\Model\Activities;
 use Musement\SDK\Musement\Model\Cities;
 use Musement\SDK\Musement\Model\Locale;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Log\LoggerInterface;
 
 final class HttpSDK implements SDKInterface
 {
     private $httpClient;
+    private $requestFactory;
     private $apiMap;
     private $citiesFactory;
     private $activitiesFactory;
     private $logger;
-    private $requestFactory;
 
     public function __construct(
         ClientInterface $httpClient,
-        RequestFactory $requestFactory,
+        RequestFactoryInterface $requestFactory,
         ApiMapInterface $apiMap,
         CitiesFactoryInterface $citiesFactory,
         ActivitiesFactoryInterface $activitiesFactory,
         LoggerInterface $logger
     ) {
         $this->httpClient = $httpClient;
+        $this->requestFactory = $requestFactory;
         $this->apiMap = $apiMap;
         $this->citiesFactory = $citiesFactory;
         $this->activitiesFactory = $activitiesFactory;
         $this->logger = $logger;
-        $this->requestFactory = $requestFactory;
     }
 
     public function getCities(Locale $locale, int $limit = 20, int $offset = 0): Cities

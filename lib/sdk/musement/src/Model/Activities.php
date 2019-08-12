@@ -25,8 +25,8 @@ final class Activities
     /**
      * @param callable $callback Callback args: \Musement\SDK\Musement\Activities\Model\Activity
      */
-    public function map(callable $callback): array
+    public function each(callable $callback): void
     {
-        return \array_map($callback, $this->activities);
+        \array_map($callback, $this->activities);
     }
 }
