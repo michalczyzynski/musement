@@ -3,9 +3,9 @@
 This is an app that can generate sitemap using Musement API.
 
 Structurally code is split into 3 parts:
-- app - current application,
-- vendor - external libraries that I use,
-- lib - components/sdks that could be easily moved to external repositories and added to projects as vendors; kept 
+- `app` - current application,
+- `vendor` - external libraries that I use,
+- `lib` - components/sdks that could be easily moved to external repositories and added to projects as vendors; kept
 separate with this in mind.
 
 There are 2 CLIs:
@@ -33,9 +33,9 @@ bin/cli dump-sitemap <locale>
 ```
 
 Valid locale options are:
-- it,
-- fr,
-- es.
+- `it`,
+- `fr`,
+- `es`.
 
 ### Sending sitemap in email
 ```bash
@@ -43,9 +43,9 @@ bin/cli email-sitemap <locale> <email-1> <email-2> <...>
 ```
 
 Valid locale options are:
-- it,
-- fr,
-- es.
+- `it`,
+- `fr`,
+- `es`.
 
 Emails: email addresses to send this sitemap to.
 
