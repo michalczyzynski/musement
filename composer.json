@@ -18,6 +18,7 @@
         "symfony/framework-bundle": "4.3.*",
         "symfony/http-client": "4.3.*",
         "symfony/monolog-bundle": "^3.4",
+        "symfony/swiftmailer-bundle": "^3.2",
         "symfony/yaml": "4.3.*",
         "thepixeldeveloper/sitemap": "^5.1"
     },
@@ -34,14 +35,14 @@
         "psr-4": {
             "Musement\\": "app/src",
             "Musement\\Component\\Accessor\\": "lib/component/accessor/src",
-            "Musement\\SDK\\Musement\\": "lib/sdk/musement/src"
+            "Musement\\SDK\\MusementCatalog\\": "lib/sdk/musement_catalog/src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Musement\\App\\Tests\\": "app/tests",
+            "Musement\\Tests\\": "app/tests",
             "Musement\\Component\\Accessor\\Tests\\": "lib/component/accessor/tests",
-            "Musement\\SDK\\Musement\\Tests\\": "lib/sdk/musement/tests"
+            "Musement\\SDK\\MusementCatalog\\Tests\\": "lib/sdk/musement_catalog/tests"
         }
     },
     "replace": {
@@ -63,14 +64,23 @@
             "@auto-scripts"
         ],
         "tests": [
+            "@tests:clear-cache",
+            "@tests:app",
             "@tests:lib:accessor",
-            "@tests:sdk:musement"
+            "@tests:sdk:musement-catalog"
+        ],
+        "tests:clear-cache": [
+            "bin/symfony cache:clear --env=test"
+        ],
+        "tests:app": [
+            "phpunit --testsuite unit --configuration app/ --verbose",
+            "phpunit --testsuite integration --configuration app/ --verbose"
         ],
         "tests:lib:accessor": [
             "phpunit --testsuite unit --configuration lib/component/accessor/ --verbose"
         ],
-        "tests:sdk:musement": [
-            "phpunit --testsuite unit --configuration lib/sdk/musement --verbose"
+        "tests:sdk:musement-catalog": [
+            "phpunit --testsuite unit --configuration lib/sdk/musement_catalog --verbose"
         ]
     },
     "conflict": {

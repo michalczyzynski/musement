@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<container
+        xmlns="http://symfony.com/schema/dic/services"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd"
+>
+
+    <parameters>
+        <parameter key="musement.sdk.base_url">%env(MUSEMENT_SDK_BASE_URL)%</parameter>
+        <parameter key="sitemap.mailer.sender.name" type="string">%env(MAILER_SENDER_NAME)%</parameter>
+        <parameter key="sitemap.mailer.sender.email" type="string">%env(MAILER_SENDER_EMAIL)%</parameter>
+        <parameter key="sitemap.priority.city" type="string">0.7</parameter>
+        <parameter key="sitemap.priority.activity" type="string">0.5</parameter>
+        <parameter key="sitemap.mail.subject" type="string">MUSEMENT.COM sitemap for {locale}</parameter>
+    </parameters>
+
+    <services>
+        <!-- Musement catalog -->
+        <service id="musement.application.musement_catalog.facade" class="Musement\Application\MusementCatalog\Facade" public="true">
+            <argument type="service" id="musement.application.musement_catalog.sitemap_factory"/>
+            <argument type="service" id="musement.application.musement_catalog.sitemap_mailer"/>
+            <argument type="service" id="monolog.logger"/>
+        </service>
+
+        <service id="musement.application.musement_catalog.sitemap_factory" alias="musement.infrastructure.application.musement_catalog.musement_catalog_sdk.sitemap_factory" />
+
+        <service id="musement.application.musement_catalog.sitemap_mailer" class="Musement\Application\MusementCatalog\SitemapMailer">
+            <argument type="service" id="musement.application.musement_catalog.sitemap_factory"/>
+            <argument type="service" id="musement.application.mailer"/>
+            <argument type="service" id="musement.application.mailer.sender"/>
+            <argument type="service" id="musement.application.musement_catalog.mailer_subject_factory"/>
+        </service>
+
+        <service id="musement.application.musement_catalog.mailer_subject_factory" class="Musement\Application\MusementCatalog\SitemapMailer\SubjectFactory">
+            <argument type="string">%sitemap.mail.subject%</argument>
+        </service>
+
+        <service id="musement.infrastructure.application.musement_catalog.musement_catalog_sdk.sitemap_factory" class="Musement\Infrastructure\Application\MusementCatalog\MusementCatalogSDK\SDKSitemapFactory">
+            <argument type="service" id="musement.infrastructure.application.musement_catalog.musement_catalog_sdk.locale_factory"/>
+            <argument type="service" id="musement.infrastructure.application.musement_catalog.musement_catalog_sdk.crawler"/>
+            <argument type="service" id="musement.application.sitemap.urlset_factory"/>
+            <argument type="string">%sitemap.priority.city%</argument>
+            <argument type="string">%sitemap.priority.activity%</argument>
+        </service>
+
+        <service id="musement.infrastructure.application.musement_catalog.musement_catalog_sdk.locale_factory" class="Musement\Infrastructure\Application\MusementCatalog\MusementCatalogSDK\LocaleFactory\ExceptionRaisingLocaleFactory" />
+
+        <service id="musement.infrastructure.application.musement_catalog.musement_catalog_sdk.crawler" class="Musement\Infrastructure\Application\MusementCatalog\MusementCatalogSDK\Crawler\SynchronousCrawler">
+            <argument type="service" id="musement.sdk.musement_catalog"/>
+        </service>
+
+        <service id="musement.application.sitemap.urlset_factory" alias="musement.infrastructure.application.sitemap.pixel_developer_urlset_factory" />
+
+        <service id="musement.infrastructure.application.sitemap.pixel_developer_urlset_factory" class="Musement\Infrastructure\Application\Sitemap\PixelDeveloper\PixelDeveloperUrlsetFactory" />
+
+        <!-- Mailer -->
+        <service id="musement.application.mailer" alias="musement.infrastructure.application.mailer.swift_mailer_client" />
+
+        <service id="musement.infrastructure.application.mailer.swift_mailer_client" class="Musement\Infrastructure\Application\Mailer\SwiftMailer\SwiftMailerClient">
+            <argument type="service" id="swiftmailer.mailer"/>
+        </service>
+
+        <service id="musement.application.mailer.sender" class="Musement\Application\Mailer\Sender">
+            <argument type="string">%sitemap.mailer.sender.email%</argument>
+            <argument type="string">%sitemap.mailer.sender.name%</argument>
+        </service>
+
+
+        <!-- Musement catalog SDK -->
+        <service id="musement.sdk.musement_catalog" class="Musement\SDK\MusementCatalog\HttpSDK">
+            <argument type="service" id="musement.sdk.musement_catalog.http.client"/>
+            <argument type="service" id="musement.sdk.musement_catalog.http.request_factory"/>
+            <argument type="service" id="musement.sdk.musement_catalog.http.api_map"/>
+            <argument type="service" id="musement.sdk.musement_catalog.http.cities_factory" />
+            <argument type="service" id="musement.sdk.musement_catalog.http.activities_factory" />
+            <argument type="service" id="monolog.logger"/>
+        </service>
+
+        <service id="musement.sdk.musement_catalog.http.client" alias="psr18.http_client"/>
+        <service id="musement.sdk.musement_catalog.http.request_factory" alias="nyholm.psr7.psr17_factory"/>
+        <service id="musement.sdk.musement_catalog.http.api_map" class="Musement\SDK\MusementCatalog\HttpSDK\V3\ApiMap">
+            <argument type="service">
+                <service class="Musement\SDK\MusementCatalog\HttpSDK\Url">
+                    <argument type="string">%musement.sdk.base_url%</argument>
+                </service>
+            </argument>
+        </service>
+        <service id="musement.sdk.musement_catalog.http.cities_factory" class="Musement\SDK\MusementCatalog\HttpSDK\V3\CitiesFactory" />
+        <service id="musement.sdk.musement_catalog.http.activities_factory" class="Musement\SDK\MusementCatalog\HttpSDK\V3\ActivitiesFactory" />
+
+    </services>
+</container>

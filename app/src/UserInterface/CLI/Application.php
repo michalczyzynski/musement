@@ -6,7 +6,7 @@ namespace Musement\UserInterface\CLI;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
 
-final class Application extends BaseApplication
+class Application extends BaseApplication
 {
     private $commandsRegistered = false;
 
