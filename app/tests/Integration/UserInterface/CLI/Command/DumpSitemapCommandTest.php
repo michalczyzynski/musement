@@ -17,19 +17,19 @@ class DumpSitemapCommandTest extends CommandTestCase
         $httpClientMock = $this->get('musement.sdk.musement_catalog.http.client');
         $httpClientMock
             ->expects(
-                'GET', 'https://api.musement.com/api/v3/cities?limit=2&offset=0',
+                'GET', 'https://this-is-api.com/api/v3/cities?limit=2&offset=0',
                 new Response(200, [], \file_get_contents(__DIR__ . '/../../../../../../lib/sdk/musement_catalog/tests/Resource/v3/cities.json'))
             )
             ->expects(
-                'GET', 'https://api.musement.com/api/v3/cities/57/activities?limit=2&offset=0',
+                'GET', 'https://this-is-api.com/api/v3/cities/57/activities?limit=2&offset=0',
                 new Response(200, [], \file_get_contents(__DIR__ . '/../../../../../../lib/sdk/musement_catalog/tests/Resource/v3/activities.json'))
             )
             ->expects(
-                'GET', 'https://api.musement.com/api/v3/cities/40/activities?limit=2&offset=0',
+                'GET', 'https://this-is-api.com/api/v3/cities/40/activities?limit=2&offset=0',
                 new Response(200, [], \file_get_contents(__DIR__ . '/../../../../../../lib/sdk/musement_catalog/tests/Resource/v3/activities.json'))
             )
             ->expects(
-                'GET', 'https://api.musement.com/api/v3/cities/2/activities?limit=2&offset=0',
+                'GET', 'https://this-is-api.com/api/v3/cities/2/activities?limit=2&offset=0',
                 new Response(200, [], \file_get_contents(__DIR__ . '/../../../../../../lib/sdk/musement_catalog/tests/Resource/v3/activities.json'))
             );
 

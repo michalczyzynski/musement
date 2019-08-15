@@ -13,9 +13,7 @@ class CommandTestCase extends KernelTestCase
 {
     protected function setUp(): void
     {
-        self::bootKernel([
-            'environment' => 'test',
-        ]);
+        self::bootKernel();
     }
 
     protected static function getKernelClass()
